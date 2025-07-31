@@ -1,0 +1,180 @@
+[
+    {
+        "id": "e9a1b5d8.a1c2d8",
+        "type": "tab",
+        "label": "Dashboard ESP8266",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "a2c3f8e1.d4b9f8",
+        "type": "mqtt in",
+        "z": "e9a1b5d8.a1c2d8",
+        "name": "Dados do ESP8266",
+        "topic": "esp8266/dados",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "b1d2e3f4.c5a6b7",
+        "inputs": 0,
+        "x": 190,
+        "y": 200,
+        "wires": [
+            [
+                "c8d9e0f1.b2a3c1"
+            ]
+        ]
+    },
+    {
+        "id": "c8d9e0f1.b2a3c1",
+        "type": "function",
+        "z": "e9a1b5d8.a1c2d8",
+        "name": "Extrair Temperatura",
+        "func": "// Payload chega como 'temperatura:25.5'\n// Precisamos extrair apenas o numero.\nvar parts = msg.payload.split(':');\nif (parts[0] === 'temperatura' && parts.length > 1) {\n    msg.payload = parseFloat(parts[1]);\n    return msg;\n}\nreturn null; // Descarta se o formato for invalido",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 420,
+        "y": 200,
+        "wires": [
+            [
+                "f1a2b3c4.d5e6f7"
+            ]
+        ]
+    },
+    {
+        "id": "d7e8f9a0.c1b2d3",
+        "type": "debug",
+        "z": "e9a1b5d8.a1c2d8",
+        "name": "Log Bruto MQTT",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "f1a2b3c4.d5e6f7",
+        "type": "ui_gauge",
+        "z": "e9a1b5d8.a1c2d8",
+        "name": "Temperatura",
+        "group": "g1h2j3k4.l5m6n7",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperatura",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "x": 640,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "af1f0823eb8d004a",
+        "type": "ui_switch",
+        "z": "e9a1b5d8.a1c2d8",
+        "name": "",
+        "label": "Botão led",
+        "tooltip": "",
+        "group": "g1h2j3k4.l5m6n7",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "LED_ON",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "LED_OFF",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 200,
+        "y": 360,
+        "wires": [
+            [
+                "85bf6f6a463990aa",
+                "d7e8f9a0.c1b2d3"
+            ]
+        ]
+    },
+    {
+        "id": "85bf6f6a463990aa",
+        "type": "mqtt out",
+        "z": "e9a1b5d8.a1c2d8",
+        "name": "",
+        "topic": "esp8266/comando",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "b1d2e3f4.c5a6b7",
+        "x": 510,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "b1d2e3f4.c5a6b7",
+        "type": "mqtt-broker",
+        "name": "Broker Local",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "g1h2j3k4.l5m6n7",
+        "type": "ui_group",
+        "name": "Sensores",
+        "tab": "t1a2b3c4.d5e6f7",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "t1a2b3c4.d5e6f7",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
